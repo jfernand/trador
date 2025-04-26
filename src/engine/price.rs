@@ -9,7 +9,11 @@ pub struct Price {
 
 impl Debug for Price {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.integral + self.fractional / self.scalar)
+        write!(
+            f,
+            "{:#0.2}",
+            self.integral as f64 + (self.fractional as f64 / self.scalar as f64)
+        )
     }
 }
 
