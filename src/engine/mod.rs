@@ -1,9 +1,12 @@
-use crate::engine::orders::{Order, OrderBook};
+use crate::engine::orders::Order;
+use order_book::OrderBook;
 use std::collections::HashMap;
 use std::fmt::{Debug, Display, Formatter};
 
 pub mod orders;
 pub mod price;
+pub(crate) mod order_book;
+pub(crate) mod limit;
 
 #[derive(Eq, Hash, PartialEq, Clone)]
 pub struct TradingPair {
@@ -44,12 +47,11 @@ impl MatchingEngine {
     pub fn add_new_market(&mut self, pair: TradingPair) {
         self.order_books.insert(pair, OrderBook::new());
     }
-    
+
     pub fn place_limit_order (&mut self, pair: &TradingPair, price: f64, order: Order) -> Result<(), String> {
         match self.order_books.get_mut(pair) {
             None => {
                 Err(format!("An order book for {pair} does not exist"))
-                    
             }
             Some(order_book) => {
                 order_book.add_order(order, price);

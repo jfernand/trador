@@ -1,29 +1,11 @@
-use engine::orders::BidOrAsk::{Ask, Bid};
-use std::fmt::Debug;
-use engine::orders::{Order, OrderBook};
-use engine::price::Price;
 use crate::engine::{MatchingEngine, TradingPair};
+use engine::limit::Limit;
+use engine::order_book::OrderBook;
+use engine::orders::BidOrAsk::{Ask, Bid};
+use engine::orders::Order;
+use engine::price::Price;
 
 mod engine;
-
-#[derive(Debug)]
-struct Limit {
-    price: Price,
-    orders: Vec<Order>,
-}
-
-impl Limit {
-    fn new(price: Price) -> Limit {
-        Limit {
-            price,
-            orders: vec![],
-        }
-    }
-
-    fn add_order(&mut self, order: Order) {
-        self.orders.push(order);
-    }
-}
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let price = Price::new(50.5);
@@ -51,6 +33,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let buy_order = Order::new(Bid, 6.5);
     engine.place_limit_order(&trading_pair, 10.000, buy_order)?;
     println!("{engine:?}");
-    
+
     Ok(())
 }
